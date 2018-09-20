@@ -20,6 +20,7 @@ parcel index.html
 3.更细你的思路是整个dom重新渲染，性能很差，没有加入diff算法和局部更新
 
 ### commit 03b5a844742537bbc9a08a5bb26cef301632f8a2
+本次提交主要实现diff算法
 #### diff.js
 主要实现变化前后虚拟dom的变更记录，返回虚拟dom变更记录
 #### patch.js
