@@ -1,5 +1,6 @@
 # simple-react
 ### 启动
+下载最近火热的零配置打包工具parcel
 ```node
 npm install -g parcel-bundler
 ```
