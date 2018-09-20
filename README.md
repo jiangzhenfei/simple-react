@@ -1,5 +1,16 @@
 # simple-react
-
+### 启动
+```node
+npm install -g parcel-bundler
+```
+然后下支持jsx语法插件依赖
+```node 
+npm install
+```
+接着执行以下代码打开localhost:1234
+```node
+parcel index.html
+```
 ### commit 584551e069e53606dc1ed753ae5c5aa7c2fd129c
 1.本次提交只是实现react从虚拟dom转真是dom
 
