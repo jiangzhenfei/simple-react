@@ -1,4 +1,6 @@
 let setAttribute = require('./setAttribute')
+let patch = require('./patch')
+let diff = require('./diff')
 function _render( vnode ){
     if ( typeof vnode === 'number' ) {
         vnode = String( vnode );
@@ -62,11 +64,21 @@ function setComponentProps( component, props ) {
 function renderComponent( component ) {
     let base;
     const renderer = component.render();//拿到组件render后的虚拟dom
+    
     //如果不是第一次啊渲染则触发componentWillUpdate
     if ( component.base && component.componentWillUpdate ) {
         component.componentWillUpdate();
     }
-    base = _render( renderer );//虚拟dom变为真dom
+    //第一次虚拟dom变为真dom
+    if( !component.base ){
+        base = _render( renderer );
+    }else{
+        //下次更新对比前后的虚拟dom，更细相应的视图
+        let _d = diff(component.preVnodeTree,renderer )
+        base = patch( component.base,_d )
+        
+    }
+    
     if ( component.base ) {//如果不是第一次啊渲染则触发componentDidUpdate
         if ( component.componentDidUpdate ) {
             component.componentDidUpdate();
@@ -74,13 +86,11 @@ function renderComponent( component ) {
     } else if ( component.componentDidMount ) {//第一次渲染则触发componentDidMount
         component.componentDidMount();
     }
-    if ( component.base && component.base.parentNode ) {
-        component.base.parentNode.replaceChild( base, component.base );
-    }
-    component.base = base;
-    base._component = component;
-
+    component.preVnodeTree = renderer;//保存本次的虚拟dom，一边下次更新可以对比
+    component.base = base;//保存本次的dom，以便下次在此基础上更新
+    //base._component = component;
 }
+
 // React.Component
 class Component {
     constructor( props = {} ) {

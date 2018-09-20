@@ -2,6 +2,7 @@
 let render = require( './render' ).render
 let renderComponent = require('./render').renderComponent;
 let Component = require('./render').Component;
+let diff = require('./diff')
 
 function createElement( tag, attrs, ...children ) {
     return {
@@ -63,7 +64,7 @@ class Counter extends React.Component {
 
     render() {
         return (
-            <div onClick={ () => this.onClick() }>
+            <div onClick={ this.onClick.bind(this) }>
                 <h1>number: {this.state.num}</h1>
                 <button>add</button>
             </div>
@@ -75,4 +76,23 @@ ReactDOM.render(
     <Counter />,
     document.getElementById( 'main' )
 );
+
+
+//test diff
+
+var d1 = (
+    <div>
+        <h1>123</h1>
+        <span>r</span>
+    </div>
+)
+var d2 = (
+    <div>
+        <h1>456</h1>
+        <p>r</p>
+    </div>
+)
+
+var a = diff( d1,d2)
+console.log( a )
 
